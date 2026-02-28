@@ -14,35 +14,35 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Cloner le repo GitHub avec ton token
+                // Branche principale et URL GitHub
                 git branch: 'master', 
                     url: 'https://github.com/salma12814/health_app', 
-                    credentialsId: 'github-token'
+                    credentialsId: 'github-token'  // ton credential Jenkins
             }
         }
 
         stage('Build') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                bat 'mvnw clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                sh './mvnw test'
+                bat 'mvnw test'
             }
         }
 
         stage('Docker Build & Run') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE} ."
-                sh "docker run -d -p ${APP_PORT}:8080 ${DOCKER_IMAGE}"
+                bat 'docker build -t %DOCKER_IMAGE% .'
+                bat 'docker run -d -p %APP_PORT%:8080 %DOCKER_IMAGE%'
             }
         }
 
         stage('Health Check') {
             steps {
-                sh "curl -f http://localhost:${APP_PORT}/hapi-fhir-jpaserver/metadata || exit 1"
+                bat 'curl -f http://localhost:%APP_PORT%/hapi-fhir-jpaserver/metadata || exit 1'
             }
         }
     }
