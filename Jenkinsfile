@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk17'        // le JDK installé dans Jenkins
+        jdk 'jdk17'        // JDK installé dans Jenkins
         maven 'maven'      // Maven installé dans Jenkins
     }
 
@@ -14,8 +14,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Remplace 'master' par ta branche principale si ce n'est pas 'master'
-                git branch: 'master', url: 'https://github.com/TON_USERNAME/hapi-fhir-jpaserver-starter.git'
+                // Cloner le repo GitHub avec ton token
+                git branch: 'master', 
+                    url: 'https://github.com/salma12814/health_app.git', 
+                    credentialsId: 'github-token'
             }
         }
 
