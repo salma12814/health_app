@@ -16,7 +16,7 @@ pipeline {
             steps {
                 // Cloner le repo GitHub avec ton token
                 git branch: 'master', 
-                    url: 'https://github.com/salma12814/health_app.git', 
+                    url: 'https://github.com/salma12814/health_app', 
                     credentialsId: 'github-token'
             }
         }
