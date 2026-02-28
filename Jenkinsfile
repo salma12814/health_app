@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'master',
-                    url: 'https://github.com/salma12814/health_app.git',
+                    url: 'https://github.com/salma12814/health_app',
                     credentialsId: 'github-token'
             }
         }
