@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk17'        // JDK installé dans Jenkins
-        maven 'maven'      // Maven installé dans Jenkins
+        jdk 'jdk17'
+        maven 'maven'
     }
 
     environment {
@@ -14,22 +14,21 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Branche principale et URL GitHub
-                git branch: 'master', 
-                    url: 'https://github.com/salma12814/health_app', 
-                    credentialsId: 'github-token'  // ton credential Jenkins
+                git branch: 'master',
+                    url: 'https://github.com/salma12814/health_app.git',
+                    credentialsId: 'github-token'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'mvnw clean package -DskipTests'
+                bat 'mvnw.cmd clean package -DskipTests'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'mvnw test'
+                bat 'mvnw.cmd test'
             }
         }
 
