@@ -1,9 +1,6 @@
 version: "3.9"
 
 services:
-  # -----------------------------
-  # PostgreSQL pour HAPI-FHIR
-  # -----------------------------
   hapi-fhir-postgres:
     image: postgres:16-alpine
     container_name: hapi-fhir-postgres
@@ -22,9 +19,6 @@ services:
       - hapi-fhir-postgres-data:/var/lib/postgresql/data
       - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  # -----------------------------
-  # HAPI-FHIR JPA Server
-  # -----------------------------
   hapi-fhir:
     build: .
     container_name: hapi-fhir-jpaserver
