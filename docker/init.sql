@@ -1,4 +1,11 @@
--- Créer utilisateur et base pour HAPI FHIR
-CREATE USER admin WITH PASSWORD 'admin';
+DO
+$$
+BEGIN
+   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'admin') THEN
+      CREATE USER admin WITH PASSWORD 'admin';
+   END IF;
+END
+$$;
+
 CREATE DATABASE hapi OWNER admin;
 GRANT ALL PRIVILEGES ON DATABASE hapi TO admin;
