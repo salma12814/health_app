@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk17'        // le JDK installé dans Jenkins
-        maven 'maven'      // Maven installé dans Jenkins (nom défini dans Global Tool Configuration)
+        jdk 'jdk17'
+        maven 'maven'
     }
 
     environment {
@@ -14,7 +14,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Utilisation du token GitHub via credentialsId
                 git branch: 'master', 
                     url: 'https://github.com/salma12814/health_app', 
                     credentialsId: 'github-token'
@@ -23,7 +22,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Utilisation de Maven installé sur Jenkins
                 bat 'mvn clean package -DskipTests'
             }
         }
@@ -40,13 +38,7 @@ pipeline {
                 bat "docker run -d -p %APP_PORT%:8080 %DOCKER_IMAGE%"
             }
         }
-
-        // stage('Health Check') {
-            // steps {
-                // bat "curl -f http://localhost:%APP_PORT%/hapi-fhir-jpaserver/metadata || exit 1"
-            // }
-        // }
-    // }
+    } // <-- fermeture correcte du bloc stages
 
     post {
         always {
