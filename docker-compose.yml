@@ -1,4 +1,9 @@
+
+
 services:
+  # -----------------------------
+  # PostgreSQL pour HAPI-FHIR
+  # -----------------------------
   hapi-fhir-postgres:
     image: postgres:16-alpine
     container_name: hapi-fhir-postgres
@@ -17,6 +22,9 @@ services:
       - hapi-fhir-postgres-data:/var/lib/postgresql/data
       - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  # -----------------------------
+  # HAPI-FHIR JPA Server
+  # -----------------------------
   hapi-fhir:
     build: .
     container_name: hapi-fhir-jpaserver
@@ -32,6 +40,12 @@ services:
     depends_on:
       hapi-fhir-postgres:
         condition: service_healthy
+    volumes:
+      - hapi-tomcat-data:/usr/local/tomcat   # volume pour Tomcat
 
+# -----------------------------
+# Volumes
+# -----------------------------
 volumes:
   hapi-fhir-postgres-data:
+  hapi-tomcat-data:
