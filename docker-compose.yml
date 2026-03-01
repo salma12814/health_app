@@ -1,4 +1,4 @@
-
+version: "3.9"
 
 services:
   # -----------------------------
@@ -40,12 +40,6 @@ services:
     depends_on:
       hapi-fhir-postgres:
         condition: service_healthy
-    volumes:
-      - hapi-tomcat-data:/usr/local/tomcat   # volume pour Tomcat
 
-# -----------------------------
-# Volumes
-# -----------------------------
 volumes:
   hapi-fhir-postgres-data:
-  hapi-tomcat-data:
