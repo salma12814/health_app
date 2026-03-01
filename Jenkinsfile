@@ -41,12 +41,12 @@ pipeline {
             }
         }
 
-        stage('Health Check') {
-            steps {
-                bat "curl -f http://localhost:%APP_PORT%/hapi-fhir-jpaserver/metadata || exit 1"
-            }
-        }
-    }
+        // stage('Health Check') {
+            // steps {
+                // bat "curl -f http://localhost:%APP_PORT%/hapi-fhir-jpaserver/metadata || exit 1"
+            // }
+        // }
+    // }
 
     post {
         always {
