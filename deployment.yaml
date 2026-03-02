@@ -17,6 +17,7 @@ spec:
       containers:
         - name: health-app
           image: health_app-hapi-fhir:latest
+          imagePullPolicy: IfNotPresent   # <-- corrigé ici
           ports:
             - containerPort: 8085
           env:
@@ -38,4 +39,3 @@ spec:
               port: 8085
             initialDelaySeconds: 20
             periodSeconds: 10
-      imagePullPolicy: IfNotPresent
