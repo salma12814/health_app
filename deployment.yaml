@@ -14,15 +14,12 @@ spec:
       labels:
         app: health-app
     spec:
-      volumes:
-        - name: tomcat-conf
-          emptyDir: {}   # <-- volume temporaire pour Tomcat
       containers:
         - name: health-app
           image: health_app-hapi-fhir:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080  # <-- Tomcat écoute sur 8080
+            - containerPort: 8085
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://hapi-fhir-postgres:5432/hapi
@@ -30,18 +27,15 @@ spec:
               value: admin
             - name: SPRING_DATASOURCE_PASSWORD
               value: admin
-          volumeMounts:
-            - mountPath: /usr/local/tomcat/conf/Catalina/localhost
-              name: tomcat-conf
           readinessProbe:
             httpGet:
               path: /fhir/metadata
-              port: 8080
-            initialDelaySeconds: 10
+              port: 8085
+            initialDelaySeconds: 15
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /fhir/metadata
-              port: 8080
-            initialDelaySeconds: 20
+              port: 8085
+            initialDelaySeconds: 30
             periodSeconds: 10

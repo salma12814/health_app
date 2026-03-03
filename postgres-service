@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hapi-fhir-postgres
+spec:
+  selector:
+    app: hapi-fhir-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
