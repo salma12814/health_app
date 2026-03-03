@@ -17,9 +17,9 @@ spec:
       containers:
         - name: health-app
           image: health_app-hapi-fhir:latest
-          imagePullPolicy: IfNotPresent   # <-- corrigé ici
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8085
+            - containerPort: 8080    # <-- corrigé pour correspondre à Tomcat
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://hapi-fhir-postgres:5432/hapi
@@ -30,12 +30,14 @@ spec:
           readinessProbe:
             httpGet:
               path: /fhir/metadata
-              port: 8085
-            initialDelaySeconds: 10
+              port: 8080            # <-- corrigé
+            initialDelaySeconds: 30
             periodSeconds: 5
+            timeoutSeconds: 2
           livenessProbe:
             httpGet:
               path: /fhir/metadata
-              port: 8085
-            initialDelaySeconds: 20
+              port: 8080            # <-- corrigé
+            initialDelaySeconds: 60
             periodSeconds: 10
+            timeoutSeconds: 2

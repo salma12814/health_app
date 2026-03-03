@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hapi-fhir-postgres
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: hapi-postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hapi-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hapi-postgres
+  template:
+    metadata:
+      labels:
+        app: hapi-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          env:
+            - name: POSTGRES_DB
+              value: hapi
+            - name: POSTGRES_USER
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: admin
+          ports:
+            - containerPort: 5432
