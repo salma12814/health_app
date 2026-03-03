@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: hapi-fhir-postgres
 spec:
+  type: ClusterIP
   selector:
     app: hapi-fhir-postgres
   ports:
-    - protocol: TCP
-      port: 5432
+    - port: 5432
       targetPort: 5432
