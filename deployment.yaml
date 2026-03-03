@@ -19,7 +19,7 @@ spec:
           image: health_app-hapi-fhir:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8085
+            - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://hapi-fhir-postgres:5432/hapi
@@ -30,12 +30,12 @@ spec:
           readinessProbe:
             httpGet:
               path: /fhir/metadata
-              port: 8085
+              port: 8080
             initialDelaySeconds: 15
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /fhir/metadata
-              port: 8085
+              port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10

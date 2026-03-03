@@ -28,6 +28,12 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
@@ -41,19 +47,13 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-
-        // 🚀 Stage Docker Cleanup amélioré
+        // ✅ FIX PRO — cleanup sûr
         stage('Docker Cleanup') {
             steps {
-                bat """
-                REM Stop et remove le conteneur s'il existe
-                for /f %%i in ('docker ps -aqf "name=%CONTAINER_NAME%"') do docker rm -f %%i
-                """
+                bat '''
+                echo Cleaning old container if exists...
+                docker rm -f %CONTAINER_NAME% 2>nul || echo No old container
+                '''
             }
         }
 
