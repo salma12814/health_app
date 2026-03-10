@@ -14,12 +14,21 @@ spec:
       labels:
         app: health-app
     spec:
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ['sh', '-c', 'mkdir -p /usr/local/tomcat/conf/Catalina/localhost && chmod -R 777 /usr/local/tomcat/conf /usr/local/tomcat/logs /usr/local/tomcat/work /usr/local/tomcat/temp']
+          volumeMounts:
+            - name: tomcat-conf
+              mountPath: /usr/local/tomcat/conf
       containers:
         - name: health-app
           image: hapi-fhir:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
+          securityContext:
+            runAsUser: 0
           resources:
             requests:
               memory: "1Gi"
@@ -28,16 +37,17 @@ spec:
               memory: "2Gi"
               cpu: "1000m"
           readinessProbe:
-            httpGet:
-              path: /actuator/health
+            tcpSocket:
               port: 8080
-            initialDelaySeconds: 90
+            initialDelaySeconds: 60
             periodSeconds: 10
-            failureThreshold: 15
+            failureThreshold: 20
           livenessProbe:
-            httpGet:
-              path: /actuator/health
+            tcpSocket:
               port: 8080
-            initialDelaySeconds: 150
+            initialDelaySeconds: 180
             periodSeconds: 20
             failureThreshold: 5
+      volumes:
+        - name: tomcat-conf
+          emptyDir: {}
